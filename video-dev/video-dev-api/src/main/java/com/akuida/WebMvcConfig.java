@@ -15,4 +15,5 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		.addResourceLocations("file:D:/KuGou/")
 		.addResourceLocations("file:E:/uploadFace/");
 	}
+
 }
