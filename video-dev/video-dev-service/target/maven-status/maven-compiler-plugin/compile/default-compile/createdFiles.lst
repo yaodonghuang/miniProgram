@@ -1,0 +1,6 @@
+com\akuida\service\UserService.class
+com\akuida\serviceImpl\VideoServiceImpl.class
+com\akuida\service\BgmService.class
+com\akuida\serviceImpl\BgmServiceImpl.class
+com\akuida\service\VideoService.class
+com\akuida\serviceImpl\UserServiceImpl.class

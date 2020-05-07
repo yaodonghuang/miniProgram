@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: video-dev-common
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Administrator
+Implementation-Vendor-Id: com.akuida
+Build-Jdk: 1.8.0_231
+Implementation-URL: http://projects.spring.io/spring-boot/video-dev/vi
+ deo-dev-common/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

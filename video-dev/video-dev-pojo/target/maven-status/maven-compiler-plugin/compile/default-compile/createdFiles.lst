@@ -1,0 +1,9 @@
+com\akuida\pojo\Comments.class
+com\akuida\pojo\Users.class
+com\akuida\pojo\vo\UsersVo.class
+com\akuida\pojo\Bgm.class
+com\akuida\pojo\SearchRecords.class
+com\akuida\pojo\UsersFans.class
+com\akuida\pojo\UsersLikeVideos.class
+com\akuida\pojo\UsersReport.class
+com\akuida\pojo\Videos.class

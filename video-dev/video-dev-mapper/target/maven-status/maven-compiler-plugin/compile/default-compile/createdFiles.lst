@@ -1,0 +1,8 @@
+com\akuida\mapper\BgmMapper.class
+com\akuida\mapper\CommentsMapper.class
+com\akuida\mapper\UsersFansMapper.class
+com\akuida\mapper\SearchRecordsMapper.class
+com\akuida\mapper\UsersLikeVideosMapper.class
+com\akuida\mapper\UsersMapper.class
+com\akuida\mapper\UsersReportMapper.class
+com\akuida\mapper\VideosMapper.class

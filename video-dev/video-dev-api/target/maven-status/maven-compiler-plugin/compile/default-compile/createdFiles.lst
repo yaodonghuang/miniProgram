@@ -1,0 +1,9 @@
+com\akuida\WebMvcConfig.class
+com\akuida\controller\BgmController.class
+com\akuida\controller\HelloWorldController.class
+com\akuida\controller\RegistLoginController.class
+com\akuida\controller\UserController.class
+com\akuida\controller\VideoController.class
+com\akuida\Swagger2.class
+com\akuida\controller\BasicController.class
+com\akuida\Application.class

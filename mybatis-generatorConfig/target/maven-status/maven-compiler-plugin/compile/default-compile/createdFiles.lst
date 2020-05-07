@@ -1,0 +1,4 @@
+com\imooc\mapper\CommentsMapper.class
+com\imooc\mybatis\utils\GeneratorDisplay.class
+com\imooc\utils\MyMapper.class
+com\imooc\pojo\Comments.class
