@@ -70,7 +70,15 @@ public class VideoController extends BasicController {
 					finalPath = FILE_SPACE + uploadPathDb + "/" + fileName;
 					// 设置数据库保存的路径
 					uploadPathDb += ("/" + fileName);
-					String fileNamePrefix = fileName.split("\\.")[0];
+					String[] nameArray = fileName.split("\\.");
+					String fileNamePrefix = "";
+					if (nameArray.length == 1) {
+						fileNamePrefix = fileName.split("\\.")[0];
+					} else {
+						for (int i = 0; i < nameArray.length - 1; i++) {
+							fileNamePrefix = fileNamePrefix + nameArray[i];
+						}
+					}
 					coverPathDb = coverPathDb + "/" + fileNamePrefix + ".jpg";
 					File file = new File(finalPath);
 					if (file.getParentFile() != null || !file.getParentFile().isDirectory()) {
