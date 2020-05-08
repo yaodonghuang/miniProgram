@@ -1,5 +1,7 @@
 package com.akuida.service;
 
+import java.util.List;
+
 import com.akuida.pojo.Videos;
 import com.akuida.utils.PagedResult;
 
@@ -23,5 +25,11 @@ public interface VideoService {
 	 * @param pageSize
 	 * @return
 	 */
-	public PagedResult getAllVideos(Integer page, Integer pageSize);
+	public PagedResult getAllVideos(Videos video, Integer isSaveRecord, Integer page, Integer pageSize);
+
+	/**
+	 * 获取热搜词
+	 * @return
+	 */
+	public List<String> getHotWords();
 }

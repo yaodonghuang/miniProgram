@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -173,11 +174,32 @@ public class VideoController extends BasicController {
 		return JSONResult.ok();
 	}
 
+	/**
+	 * 分页和搜索查询视频列表
+	 * 
+	 * @param video
+	 * @param isSaveRecord
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
 	@PostMapping(value = "/showAll")
-	public JSONResult showAll(Integer page, Integer pageSize) {
+	public JSONResult showAll(@RequestBody Videos video, Integer isSaveRecord, Integer page, Integer pageSize)
+			throws Exception {
 		page = page == null ? 1 : page;
 		pageSize = pageSize == null ? PAGE_SIZE : pageSize;
-		PagedResult pr = videoService.getAllVideos(page, pageSize);
+		PagedResult pr = videoService.getAllVideos(video, isSaveRecord, page, pageSize);
 		return JSONResult.ok(pr);
+	}
+
+	/**
+	 * 热搜词列表
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping(value = "/hot")
+	public JSONResult hot() throws Exception {
+		return JSONResult.ok(videoService.getHotWords());
 	}
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.akuida.mapper.SearchRecordsMapper;
 import com.akuida.mapper.VideosMapper;
 import com.akuida.mapper.VideosMapperCustom;
+import com.akuida.pojo.SearchRecords;
 import com.akuida.pojo.Videos;
 import com.akuida.pojo.vo.VideosVo;
 import com.akuida.service.VideoService;
@@ -30,6 +32,8 @@ public class VideoServiceImpl implements VideoService {
 	@Autowired
 	private VideosMapperCustom videoMapperCustom;
 	@Autowired
+	private SearchRecordsMapper searchRecordsMapper;
+	@Autowired
 	private Sid sid;
 
 	@Transactional(propagation = Propagation.REQUIRED)
@@ -49,11 +53,21 @@ public class VideoServiceImpl implements VideoService {
 		videoMapper.updateByPrimaryKeySelective(video);
 	}
 
-	@Transactional(propagation = Propagation.SUPPORTS)
+	@Transactional(propagation = Propagation.REQUIRED)
 	@Override
-	public PagedResult getAllVideos(Integer page, Integer pageSize) {
+	public PagedResult getAllVideos(Videos video, Integer isSaveRecord, Integer page, Integer pageSize) {
+		String desc = "";
+		if (video != null) {
+			desc = video.getVideoDesc();
+			if (isSaveRecord != null && isSaveRecord == 1) {
+				SearchRecords record = new SearchRecords();
+				record.setId(sid.nextShort());
+				record.setContent(desc);
+				searchRecordsMapper.insert(record);
+			}
+		}
 		PageHelper.startPage(page, pageSize);
-		List<VideosVo> list = videoMapperCustom.queryAllVideos();
+		List<VideosVo> list = videoMapperCustom.queryAllVideos(desc);
 		PageInfo<VideosVo> pageInfo = new PageInfo<>(list);
 		PagedResult pagedResult = new PagedResult();
 		pagedResult.setPage(page);
@@ -61,6 +75,12 @@ public class VideoServiceImpl implements VideoService {
 		pagedResult.setRows(list);
 		pagedResult.setRecords(pageInfo.getTotal());
 		return pagedResult;
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public List<String> getHotWords() {
+		return searchRecordsMapper.getHotWords();
 	}
 
 }

@@ -29,6 +29,9 @@
   		left join users u
   		on u.id = v.user_id
   		where v.status = 1
+  		<if test="videoDesc != null and videoDesc != ''">
+  			and v.video_desc like concat(concat('%',#{videoDesc}),'%')
+  		</if>
   		order by v.create_time desc
   </select>
 </mapper>
