@@ -52,7 +52,7 @@ public class RegistLoginController extends BasicController {
 	public UsersVo getUserResultInfo(Users userMode) {
 		userMode.setPassword("");
 		String uniqueToken = UUID.randomUUID().toString();
-		redis.set(USER_REDIS_SESSION + ":" + userMode.getId(), uniqueToken, 1000 * 60 * 30);
+		redis.set(USER_REDIS_SESSION + ":" + userMode.getId(), uniqueToken, 7 * 24 * 60 * 60);
 		UsersVo userVo = new UsersVo();
 		BeanUtils.copyProperties(userMode, userVo);
 		userVo.setUserToken(uniqueToken);
