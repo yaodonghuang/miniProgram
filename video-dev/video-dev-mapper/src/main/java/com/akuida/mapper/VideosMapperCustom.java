@@ -11,4 +11,8 @@ import com.akuida.utils.MyMapper;
 public interface VideosMapperCustom extends MyMapper<Videos> {
 
 	public List<VideosVo> queryAllVideos(@Param("videoDesc") String videoDesc);
+
+	public void addVideoLikeCount(String videoId);
+	
+	public void reduceVideoLikeCount(String videoId);
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.akuida.pojo.Users;
+import com.akuida.pojo.vo.PublisherVideo;
 import com.akuida.pojo.vo.UsersVo;
 import com.akuida.service.UserService;
 import com.akuida.utils.JSONResult;
@@ -95,5 +96,23 @@ public class UserController extends BasicController {
 		UsersVo usersVo = new UsersVo();
 		BeanUtils.copyProperties(user, usersVo);
 		return JSONResult.ok(usersVo);
+	}
+
+	@PostMapping("/queryPublisher")
+	public JSONResult queryPublisher(String loginUserId, String videoId, String publisherUserId) throws Exception {
+		if (StringUtils.isBlank(publisherUserId)) {
+			return JSONResult.errorMsg("");
+		}
+		// 1.查询视频发布者的信息
+		Users user = userService.queryUserInfo(publisherUserId);
+		UsersVo publisher = new UsersVo();
+		BeanUtils.copyProperties(user, publisher);
+		// 2.查询当前登陆者和视频的点赞关系
+		Boolean userLikeVideo = userService.isUserLikeVideo(loginUserId, videoId);
+
+		PublisherVideo bean = new PublisherVideo();
+		bean.setPublisher(publisher);
+		bean.setUserLikeVideo(userLikeVideo);
+		return JSONResult.ok(bean);
 	}
 }

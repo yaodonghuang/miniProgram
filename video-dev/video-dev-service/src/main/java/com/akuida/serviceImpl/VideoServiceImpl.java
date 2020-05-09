@@ -9,15 +9,21 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.akuida.mapper.SearchRecordsMapper;
+import com.akuida.mapper.UsersLikeVideosMapper;
+import com.akuida.mapper.UsersMapper;
 import com.akuida.mapper.VideosMapper;
 import com.akuida.mapper.VideosMapperCustom;
 import com.akuida.pojo.SearchRecords;
+import com.akuida.pojo.UsersLikeVideos;
 import com.akuida.pojo.Videos;
 import com.akuida.pojo.vo.VideosVo;
 import com.akuida.service.VideoService;
 import com.akuida.utils.PagedResult;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import tk.mybatis.mapper.entity.Example;
+import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
  * Video实现类
@@ -30,9 +36,13 @@ public class VideoServiceImpl implements VideoService {
 	@Autowired
 	private VideosMapper videoMapper;
 	@Autowired
+	private UsersMapper usersMapper;
+	@Autowired
 	private VideosMapperCustom videoMapperCustom;
 	@Autowired
 	private SearchRecordsMapper searchRecordsMapper;
+	@Autowired
+	private UsersLikeVideosMapper usersLikeVideosMapper;
 	@Autowired
 	private Sid sid;
 
@@ -81,6 +91,37 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public List<String> getHotWords() {
 		return searchRecordsMapper.getHotWords();
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void userLikeVideo(String userId, String videoId, String videoCreateId) {
+		// 保存用户和视频的喜欢点赞关联关系表
+		String likeId = sid.nextShort();
+		UsersLikeVideos ulv = new UsersLikeVideos();
+		ulv.setId(likeId);
+		ulv.setUserId(userId);
+		ulv.setVideoId(videoId);
+		usersLikeVideosMapper.insert(ulv);
+		// 2.视频喜欢数量累加
+		videoMapperCustom.addVideoLikeCount(videoId);
+		// 3.用户受喜欢数量的累加
+		usersMapper.addReceiveLikeCount(videoCreateId);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void userUnLikeVideo(String userId, String videoId, String videoCreateId) {
+		// 1.删除用户和视频的喜欢点赞关联关系表
+		Example example = new Example(UsersLikeVideos.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("userId", userId);
+		criteria.andEqualTo("videoId", videoId);
+		usersLikeVideosMapper.deleteByExample(example);
+		// 2.视频喜欢数量累减
+		videoMapperCustom.reduceVideoLikeCount(videoId);
+		// 3.用户受喜欢数量的累减
+		usersMapper.reduceReceiveLikeCount(videoCreateId);
 	}
 
 }
