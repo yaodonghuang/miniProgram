@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.akuida.mapper.UsersFansMapper;
 import com.akuida.mapper.UsersLikeVideosMapper;
 import com.akuida.mapper.UsersMapper;
 import com.akuida.pojo.Users;
+import com.akuida.pojo.UsersFans;
 import com.akuida.pojo.UsersLikeVideos;
 import com.akuida.service.UserService;
 
@@ -28,6 +30,8 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UsersMapper userMapper;
+	@Autowired
+	private UsersFansMapper userFansMapper;
 	@Autowired
 	private UsersLikeVideosMapper usersLikeVideosMapper;
 	@Autowired
@@ -92,6 +96,31 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 		return false;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void saveUserFanRelation(String userId, String fanId) {
+		String relId = sid.nextShort();
+		UsersFans userFan = new UsersFans();
+		userFan.setId(relId);
+		userFan.setFanId(fanId);
+		userFan.setUserId(userId);
+		userFansMapper.insert(userFan);
+		userMapper.addFansCount(userId);
+		userMapper.addFollersCount(fanId);
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void deleteUserFanRelation(String userId, String fanId) {
+		Example example = new Example(UsersFans.class);
+		Criteria criteria = example.createCriteria();
+		criteria.andEqualTo("userId", userId);
+		criteria.andEqualTo("fanId", fanId);
+		userFansMapper.deleteByExample(example);
+		userMapper.reduceFansCount(userId);
+		userMapper.reduceFollersCount(fanId);
 	}
 
 }

@@ -115,4 +115,22 @@ public class UserController extends BasicController {
 		bean.setUserLikeVideo(userLikeVideo);
 		return JSONResult.ok(bean);
 	}
+
+	@PostMapping("/beyourfans")
+	public JSONResult beyourfans(String userId, String fanId) throws Exception {
+		if (StringUtils.isBlank(userId) || StringUtils.isBlank(fanId)) {
+			return JSONResult.errorMsg("");
+		}
+		userService.saveUserFanRelation(userId, fanId);
+		return JSONResult.ok("关注成功");
+	}
+
+	@PostMapping("/dontbeyourfans")
+	public JSONResult dontbeyourfans(String userId, String fanId) throws Exception {
+		if (StringUtils.isBlank(userId) || StringUtils.isBlank(fanId)) {
+			return JSONResult.errorMsg("");
+		}
+		userService.deleteUserFanRelation(userId, fanId);
+		return JSONResult.ok("取消关注成功");
+	}
 }
