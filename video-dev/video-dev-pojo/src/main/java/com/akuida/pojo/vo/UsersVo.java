@@ -13,6 +13,7 @@ public class UsersVo {
 	@ApiModelProperty(hidden = true)
 	private String userToken;
 
+	private boolean isFollow;
 	/**
 	 * 用户名
 	 */
@@ -202,4 +203,13 @@ public class UsersVo {
 	public void setUserToken(String userToken) {
 		this.userToken = userToken;
 	}
+
+	public boolean isFollow() {
+		return isFollow;
+	}
+
+	public void setFollow(boolean isFollow) {
+		this.isFollow = isFollow;
+	}
+
 }

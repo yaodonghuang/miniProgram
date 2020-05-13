@@ -59,4 +59,10 @@ public interface UserService {
 	 * @param fanId
 	 */
 	public void deleteUserFanRelation(String userId, String fanId);
+	
+	/**
+	 * 判断用户和视频发布者是否建立粉丝和关注关系
+	 * @return
+	 */
+	public boolean ifFollow(String userId, String fanId);
 }
