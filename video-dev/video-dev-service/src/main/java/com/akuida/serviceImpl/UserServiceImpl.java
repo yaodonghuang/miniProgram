@@ -1,5 +1,6 @@
 package com.akuida.serviceImpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.akuida.mapper.UsersFansMapper;
 import com.akuida.mapper.UsersLikeVideosMapper;
 import com.akuida.mapper.UsersMapper;
+import com.akuida.mapper.UsersReportMapper;
 import com.akuida.pojo.Users;
 import com.akuida.pojo.UsersFans;
 import com.akuida.pojo.UsersLikeVideos;
+import com.akuida.pojo.UsersReport;
 import com.akuida.service.UserService;
 
 import tk.mybatis.mapper.entity.Example;
@@ -34,6 +37,8 @@ public class UserServiceImpl implements UserService {
 	private UsersFansMapper userFansMapper;
 	@Autowired
 	private UsersLikeVideosMapper usersLikeVideosMapper;
+	@Autowired
+	private UsersReportMapper usersReportMapper;
 	@Autowired
 	private Sid sid;
 
@@ -135,6 +140,15 @@ public class UserServiceImpl implements UserService {
 			return true;
 		}
 		return false;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRED)
+	@Override
+	public void reportUser(UsersReport usersReport) {
+		String urId = sid.nextShort();
+		usersReport.setId(urId);
+		usersReport.setCreateDate(new Date());
+		usersReportMapper.insert(usersReport);
 	}
 
 }

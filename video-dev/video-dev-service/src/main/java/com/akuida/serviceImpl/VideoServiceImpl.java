@@ -67,8 +67,10 @@ public class VideoServiceImpl implements VideoService {
 	@Override
 	public PagedResult getAllVideos(Videos video, Integer isSaveRecord, Integer page, Integer pageSize) {
 		String desc = "";
+		String userId = "";
 		if (video != null) {
 			desc = video.getVideoDesc();
+			userId = video.getUserId();
 			if (isSaveRecord != null && isSaveRecord == 1) {
 				SearchRecords record = new SearchRecords();
 				record.setId(sid.nextShort());
@@ -77,7 +79,7 @@ public class VideoServiceImpl implements VideoService {
 			}
 		}
 		PageHelper.startPage(page, pageSize);
-		List<VideosVo> list = videoMapperCustom.queryAllVideos(desc);
+		List<VideosVo> list = videoMapperCustom.queryAllVideos(desc, userId);
 		PageInfo<VideosVo> pageInfo = new PageInfo<>(list);
 		PagedResult pagedResult = new PagedResult();
 		pagedResult.setPage(page);
@@ -122,6 +124,36 @@ public class VideoServiceImpl implements VideoService {
 		videoMapperCustom.reduceVideoLikeCount(videoId);
 		// 3.用户受喜欢数量的累减
 		usersMapper.reduceReceiveLikeCount(videoCreateId);
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public PagedResult queryMyLikeVideos(String userId, Integer page, Integer pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<VideosVo> list = videoMapperCustom.queryMyLikeVideos(userId);
+		PageInfo<VideosVo> pageList = new PageInfo<>(list);
+
+		PagedResult pagedResult = new PagedResult();
+		pagedResult.setTotal(pageList.getPages());
+		pagedResult.setRows(list);
+		pagedResult.setPage(page);
+		pagedResult.setRecords(pageList.getTotal());
+		return pagedResult;
+	}
+
+	@Transactional(propagation = Propagation.SUPPORTS)
+	@Override
+	public PagedResult queryMyFollowVideos(String userId, Integer page, Integer pageSize) {
+		PageHelper.startPage(page, pageSize);
+		List<VideosVo> list = videoMapperCustom.queryMyFollowVideos(userId);
+		PageInfo<VideosVo> pageList = new PageInfo<>(list);
+
+		PagedResult pagedResult = new PagedResult();
+		pagedResult.setTotal(pageList.getPages());
+		pagedResult.setRows(list);
+		pagedResult.setPage(page);
+		pagedResult.setRecords(pageList.getTotal());
+		return pagedResult;
 	}
 
 }

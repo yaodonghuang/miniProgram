@@ -1,6 +1,7 @@
 package com.akuida.service;
 
 import com.akuida.pojo.Users;
+import com.akuida.pojo.UsersReport;
 
 public interface UserService {
 	/**
@@ -65,4 +66,10 @@ public interface UserService {
 	 * @return
 	 */
 	public boolean ifFollow(String userId, String fanId);
+	
+	/**
+	 * 保存举报信息
+	 * @param usersReport
+	 */
+	public void reportUser(UsersReport usersReport);
 }

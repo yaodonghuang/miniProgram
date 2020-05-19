@@ -29,23 +29,46 @@ public interface VideoService {
 
 	/**
 	 * 获取热搜词
+	 * 
 	 * @return
 	 */
 	public List<String> getHotWords();
-	
+
 	/**
-	 * 	用户喜欢视频
+	 * 用户喜欢视频
+	 * 
 	 * @param userId
 	 * @param videoId
 	 * @param videoCreateId
 	 */
 	public void userLikeVideo(String userId, String videoId, String videoCreateId);
-	
+
 	/**
 	 * 用户不喜欢视频
+	 * 
 	 * @param userId
 	 * @param videoId
 	 * @param videoCreateId
 	 */
 	public void userUnLikeVideo(String userId, String videoId, String videoCreateId);
+
+	/**
+	 * 我收藏点赞过的视频列表
+	 * 
+	 * @param userId
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
+	public PagedResult queryMyLikeVideos(String userId, Integer page, Integer pageSize);
+
+	/**
+	 * 我关注的人发的视频
+	 * 
+	 * @param userId
+	 * @param page
+	 * @param pageSize
+	 * @return
+	 */
+	public PagedResult queryMyFollowVideos(String userId, Integer page, Integer pageSize);
 }

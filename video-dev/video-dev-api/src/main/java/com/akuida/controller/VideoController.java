@@ -201,6 +201,34 @@ public class VideoController extends BasicController {
 	}
 
 	/**
+	 * 我收藏过的视频列表
+	 */
+	@PostMapping(value = "/showMyLike")
+	public JSONResult showMyLike(String userId, Integer page, Integer pageSize) throws Exception{
+		if (StringUtils.isBlank(userId)) {
+			return JSONResult.ok();
+		}
+		page = page == null ? 1 : page;
+		pageSize = pageSize == null ? 6 : pageSize;
+		PagedResult videoList = videoService.queryMyLikeVideos(userId, page, pageSize);
+		return JSONResult.ok(videoList);
+	}
+	
+	/**
+	 * 	我关注的人发的视频
+	 */
+	@PostMapping(value = "/showMyFollow")
+	public JSONResult showMyFollow(String userId, Integer page, Integer pageSize) throws Exception{
+		if (StringUtils.isBlank(userId)) {
+			return JSONResult.ok();
+		}
+		page = page == null ? 1 : page;
+		pageSize = pageSize == null ? 6 : pageSize;
+		PagedResult videoList = videoService.queryMyFollowVideos(userId, page, pageSize);
+		return JSONResult.ok(videoList);
+	}
+	
+	/**
 	 * 热搜词列表
 	 * 
 	 * @return
@@ -210,13 +238,13 @@ public class VideoController extends BasicController {
 	public JSONResult hot() throws Exception {
 		return JSONResult.ok(videoService.getHotWords());
 	}
-	
+
 	@PostMapping(value = "/userLike")
 	public JSONResult userLike(String userId, String videoId, String videoCreateId) throws Exception {
 		videoService.userLikeVideo(userId, videoId, videoCreateId);
 		return JSONResult.ok();
 	}
-	
+
 	@PostMapping(value = "/userUnLike")
 	public JSONResult userUnLike(String userId, String videoId, String videoCreateId) throws Exception {
 		videoService.userUnLikeVideo(userId, videoId, videoCreateId);

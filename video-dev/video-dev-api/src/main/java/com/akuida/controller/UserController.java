@@ -11,12 +11,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.akuida.pojo.Users;
+import com.akuida.pojo.UsersReport;
 import com.akuida.pojo.vo.PublisherVideo;
 import com.akuida.pojo.vo.UsersVo;
 import com.akuida.service.UserService;
@@ -136,5 +138,14 @@ public class UserController extends BasicController {
 		}
 		userService.deleteUserFanRelation(userId, fanId);
 		return JSONResult.ok("取消关注成功");
+	}
+	
+	@PostMapping("/reportUser")
+	public JSONResult reportUser(@RequestBody UsersReport usersReport) throws Exception {
+		
+		// 保存举报信息
+		userService.reportUser(usersReport);
+		return JSONResult.errorMsg("举报成功！！");
+		
 	}
 }
